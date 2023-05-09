@@ -15,9 +15,10 @@ port =13536
 rx_var = bytearray(2048)
 rx_num = 0
 num = 11
+ips_connected = []
 def getDeviceInfo():
     global rx_var
-    if readPendingDatagrams(tramas.basic_info_frame):
+    if readPendingDatagrams(tramas.basic_info_frame,ip_address=ip_address):
         # StrLen = 0
         # temp = np.empty(64)
         # i = 0
@@ -44,7 +45,7 @@ def getDeviceInfo():
 
 def getTime():
     global rx_var
-    if readPendingDatagrams(tramas.time_frame):
+    if readPendingDatagrams(tramas.time_frame,ip_address=ip_address):
         second = rx_var[0]//16*10 + rx_var[0]%16 # segundo
         minute = rx_var[1]//16*10 + rx_var[1]%16 # minuto
         hour = rx_var[2]//16*10 + rx_var[2]%16 # hora
@@ -59,10 +60,10 @@ def getTime():
         print("dia: ",date)
         print("mes: ",month)
         print("year: ",year)
-def readPendingDatagrams(frame):
+
+def readPendingDatagrams(frame,ip_address):
     global rx_var_formated 
     global udp_socket 
-    global ip_address 
     global data
     global CheckSumCalc 
     global CheckSumReceive 
@@ -71,9 +72,11 @@ def readPendingDatagrams(frame):
     global rx_var
     global rx_num 
     global num
+    global ips_connected
     try:
         udp_socket.sendto(frame, (ip_address, 161))
         data, sender = udp_socket.recvfrom(2048)
+        ips_connected.append(sender)
         array = list(data)
         size = len(array)
 

@@ -29,4 +29,18 @@ basic_info_frame.append(189) #9
 basic_info_frame.append(1) #10
 basic_info_frame.append(147) #11
 basic_info_frame.append(192) #12
-#basic_info_frame.append(80) #13
+#search ips frames
+search_ips_frame = bytearray()
+search_ips_frame.append(192)  #0
+search_ips_frame.append(32)  #1
+search_ips_frame.append(32) #2
+search_ips_frame.append(16) #3
+search_ips_frame.append(1) #4
+search_ips_frame.append(0) #5
+search_ips_frame.append(255) #6
+search_ips_frame.append(255) #7
+search_ips_frame.append(128) #8
+search_ips_frame.append(191) #9
+search_ips_frame.append(1) #10
+search_ips_frame.append(143) #11
+search_ips_frame.append(192) #12
