@@ -96,8 +96,14 @@ def getHorarios():
             print("fecha: ",date)
             print("plan: ",day_plan)
 '''
-pendiente revisar el proceso de conversion de datos sobre todo para las variables de day_plan y mes.
+pendiente revisar el proceso de conversion de datos sobre todo para las variables de mes y fecha.
 '''
+
+def getPlanes():
+    global rx_var
+    if readPendingDatagrams():
+        pass
+
 def readPendingDatagrams(frame,ip_address):
     global rx_var_formated 
     global udp_socket 
