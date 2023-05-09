@@ -1,39 +1,8 @@
 # echo-client.py
 import socket
 import numpy as np
-
-#tiempo
-time_frame = bytearray()
-time_frame.append(192)  #0
-time_frame.append(32)  #1
-time_frame.append(32) #2
-time_frame.append(16) #3
-time_frame.append(2) #4
-time_frame.append(1) #5
-time_frame.append(1) #6
-time_frame.append(1) #7
-time_frame.append(128) #8
-time_frame.append(5) #9
-time_frame.append(1) #10
-time_frame.append(219) #11
-time_frame.append(221) #12
-time_frame.append(192) #13
-#basic_info 
-basic_info_frame = bytearray()
-basic_info_frame.append(192)  #0
-basic_info_frame.append(32)  #1
-basic_info_frame.append(32) #2
-basic_info_frame.append(16) #3
-basic_info_frame.append(2) #4
-basic_info_frame.append(1) #5
-basic_info_frame.append(1) #6
-basic_info_frame.append(1) #7
-basic_info_frame.append(128) #8
-basic_info_frame.append(189) #9
-basic_info_frame.append(1) #10
-basic_info_frame.append(147) #11
-basic_info_frame.append(192) #12
-#basic_info_frame.append(80) #13
+import tramas
+import time
 #variables de inicio
 rx_var_formated = []
 udp_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -46,10 +15,36 @@ port =13536
 rx_var = bytearray(2048)
 rx_num = 0
 num = 11
-
-def converTime():
+def getDeviceInfo():
     global rx_var
-    if readPendingDatagrams():
+    if readPendingDatagrams(tramas.basic_info_frame):
+        # StrLen = 0
+        # temp = np.empty(64)
+        # i = 0
+        # while i < 128:
+        #     if rx_var[i] != 0x00 or rx_var[i+1] != 0x00:
+        #         temp[StrLen] = (rx_var[i]<<8)|rx_var[i+1]
+        #         StrLen += 1
+        #         i += 2
+        #     else:
+        #         break 
+        #InterInfoStr = ''.join([chr(temp[i]) for i in range(StrLen)])
+        mac_addr = bytearray([rx_var[i] for i in range(142, 148)])
+        mac_addr = mac_addr.hex().upper()
+        mac_addr = ':'.join([mac_addr[i:i+2] for i in range(0, 12, 2)])
+        ip_server = "{oct_1}.{oct_2}.{oct_3}.{oct_4}".format(oct_1 = rx_var[148],oct_2 = rx_var[149],oct_3 = rx_var[150],oct_4 = rx_var[151])
+        port_server = "{port_s}".format(port_s = (rx_var[152]<<8)|rx_var[153])
+        zona_horaria = ((rx_var[156]<<16)|(rx_var[157]<<8)|rx_var[158])/3600.0;
+        tscNum = (rx_var[159]<<24)|(rx_var[160]<<16)|(rx_var[161]<<8)|rx_var[162]
+        print("mac_target: ",mac_addr)
+        print("ip_target: ",ip_server)
+        print("puerto_server: ",port_server)
+        print("zona_horaria: ",zona_horaria)
+        print("numero_dispositivo: ",tscNum)
+
+def getTime():
+    global rx_var
+    if readPendingDatagrams(tramas.time_frame):
         second = rx_var[0]//16*10 + rx_var[0]%16 # segundo
         minute = rx_var[1]//16*10 + rx_var[1]%16 # minuto
         hour = rx_var[2]//16*10 + rx_var[2]%16 # hora
@@ -64,7 +59,7 @@ def converTime():
         print("dia: ",date)
         print("mes: ",month)
         print("year: ",year)
-def readPendingDatagrams():
+def readPendingDatagrams(frame):
     global rx_var_formated 
     global udp_socket 
     global ip_address 
@@ -77,7 +72,7 @@ def readPendingDatagrams():
     global rx_num 
     global num
     try:
-        udp_socket.sendto(time_frame, (ip_address, 161))
+        udp_socket.sendto(frame, (ip_address, 161))
         data, sender = udp_socket.recvfrom(2048)
         array = list(data)
         size = len(array)
@@ -126,7 +121,9 @@ def readPendingDatagrams():
 while True:
     try:
         udp_socket.bind(('0.0.0.0', port))
-        converTime()
+        getTime()
+        time.sleep(5)
+        getDeviceInfo()
         udp_socket.close()
         break
     except OSError:
