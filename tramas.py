@@ -29,7 +29,71 @@ basic_info_frame.append(189) #9
 basic_info_frame.append(1) #10
 basic_info_frame.append(147) #11
 basic_info_frame.append(192) #12
-#search ips frames
+#device_info 
+device_info_frame = bytearray()
+device_info_frame.append(192)  #0
+device_info_frame.append(32)  #1
+device_info_frame.append(32) #2
+device_info_frame.append(16) #3
+device_info_frame.append(2) #4
+device_info_frame.append(1) #5
+device_info_frame.append(1) #6
+device_info_frame.append(1) #7
+device_info_frame.append(128) #8
+device_info_frame.append(190) #9
+device_info_frame.append(1) #10
+device_info_frame.append(148) #11
+device_info_frame.append(192) #12
+
+#search horarios 
+schedule_frame = bytearray()
+schedule_frame.append(192)  #0
+schedule_frame.append(32)  #1
+schedule_frame.append(32) #2
+schedule_frame.append(16) #3
+schedule_frame.append(3) #4
+schedule_frame.append(1) #5
+schedule_frame.append(1) #6
+schedule_frame.append(1) #7
+schedule_frame.append(128) #8
+schedule_frame.append(9) #9
+schedule_frame.append(1) #10
+schedule_frame.append(224) #11
+schedule_frame.append(192) #12
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#search ips frame
 search_ips_frame = bytearray()
 search_ips_frame.append(192)  #0
 search_ips_frame.append(32)  #1

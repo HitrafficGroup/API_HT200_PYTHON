@@ -16,7 +16,7 @@ rx_var = bytearray(2048)
 rx_num = 0
 num = 11
 ips_connected = []
-def getDeviceInfo():
+def getBasicInfo():
     global rx_var
     if readPendingDatagrams(tramas.basic_info_frame,ip_address=ip_address):
         # StrLen = 0
@@ -42,7 +42,23 @@ def getDeviceInfo():
         print("puerto_server: ",port_server)
         print("zona_horaria: ",zona_horaria)
         print("numero_dispositivo: ",tscNum)
+def getDeviceInfo():
+    global rx_var
+    if readPendingDatagrams(tramas.device_info_frame,ip_address=ip_address):
+        StrLen = 0
+        temp = [0] * 64
 
+        for i in range(0, 128, 2):
+            if rx_var[i] != 0x00 or rx_var[i + 1] != 0x00:
+                temp[StrLen] = (rx_var[i] << 8) | rx_var[i + 1]
+                StrLen += 1
+            else:
+                break
+
+        manufacturerInfoStr = ''.join([chr(temp[i]) for i in range(StrLen)])
+        print(manufacturerInfoStr)
+
+        
 def getTime():
     global rx_var
     if readPendingDatagrams(tramas.time_frame,ip_address=ip_address):
@@ -61,6 +77,27 @@ def getTime():
         print("mes: ",month)
         print("year: ",year)
 
+
+def getHorarios():
+    global rx_var
+    if readPendingDatagrams(tramas.schedule_frame,ip_address=ip_address):
+        schedule_size = 9
+        for i in range(5):
+            readpoint = schedule_size*i +1
+            number = rx_var[readpoint]
+            month = rx_var[readpoint+1] | (rx_var[readpoint+2]<<8)
+            day = rx_var[readpoint+3]
+            date = rx_var[readpoint+4] |(rx_var[readpoint+5]<<8) |(rx_var[readpoint+6]<<16) |(rx_var[readpoint+7]<<24)
+            day_plan = rx_var[readpoint+8];
+            
+            print("number: ",number)
+            print("mes: ",month)
+            print("dia: ",day)
+            print("fecha: ",date)
+            print("plan: ",day_plan)
+'''
+pendiente revisar el proceso de conversion de datos sobre todo para las variables de day_plan y mes.
+'''
 def readPendingDatagrams(frame,ip_address):
     global rx_var_formated 
     global udp_socket 
@@ -124,9 +161,7 @@ def readPendingDatagrams(frame,ip_address):
 while True:
     try:
         udp_socket.bind(('0.0.0.0', port))
-        getTime()
-        time.sleep(5)
-        getDeviceInfo()
+        getHorarios()
         udp_socket.close()
         break
     except OSError:
