@@ -133,7 +133,7 @@ def getSecuencia():
       
         if 16 == rx_var[0] and rx_num == SequenceSize * 16+ 1:
             readpoint = 1
-            for i in range(1):
+            for i in range(1): 
                 Num = rx_var[readpoint]
                 readpoint +=1
                 rings_secuency = []
@@ -144,15 +144,72 @@ def getSecuencia():
                     for i in range(16):
                         fase = rx_var[readpoint]
                         readpoint +=1
-                        fase_data = ('fase_{calculo}'.format(calculo = i+1),fase)
+                        fase_data = ('paso_{calculo}'.format(calculo = i+1),fase)
                         fases_ring.append(fase_data)
                     fases_dict = dict((x, y) for x, y in fases_ring)
                     rings_secuency.append(fases_dict)
                 df = pd.DataFrame(rings_secuency)
                 print(df)
                     
+'''
+en el primer for colocar el valor de 16 para hacer referencia a las 16 posibles secuencias
+'''
+def getSplit():
+    global rx_var
+    if readPendingDatagrams(tramas.split_frame,ip_address=ip_address):
+        SplitSize = 16 * 4 + 1;
+        if 20 == rx_var[0] and rx_num == SplitSize * 20 + 1:
+            readpoint = 1
+            for i in range(1): #le dejamos en 1 para mostrar solo la tabla 1
+                num = rx_var[readpoint]
+                split_list = []
+                readpoint +=1
+                for i in range(16):
+                    fase = rx_var[readpoint]
+                    readpoint +=1
+                    time = rx_var[readpoint]
+                    readpoint +=1
+                    mode = rx_var[readpoint]
+                    readpoint +=1
+                    coord = rx_var[readpoint]
+                    readpoint +=1
+                    split_dict = {
+                        'fase':fase,
+                        'tiempo':time,
+                        'mode':mode,
+                        'coord':coord
+                    }
+                    split_list.append(split_dict)
+                df = pd.DataFrame(split_list)
+                print(df)
 
-
+def getAccion():
+    global rx_var
+    if readPendingDatagrams(tramas.action_frame,ip_address=ip_address):
+        ActionSize = 4
+        if 100 == rx_var[0] and rx_num == ActionSize * 100 + 1:
+            readpoint = 1
+            action_list = []
+            for i in range(5):
+                Num = rx_var[readpoint]
+                readpoint +=1
+                PatternNum = rx_var[readpoint]
+                readpoint +=1
+                Auxillary = rx_var[readpoint]
+                readpoint +=1
+                Special = rx_var[readpoint]
+                readpoint +=1
+                action_dict ={
+                    'num':Num,
+                    'patron': PatternNum,
+                    'auxiliary':Auxillary,
+                    'special':Special
+                }
+                action_list.append(action_dict)
+            print(action_list)
+            df = pd.DataFrame(action_list)
+            print(df)
+            pass
 def getTime():
     global rx_var
     if readPendingDatagrams(tramas.time_frame,ip_address=ip_address):
@@ -171,11 +228,40 @@ def getTime():
         print("mes: ",month)
         print("year: ",year)
 
-
-def getHorarios():
+def getPattern():
+    global rx_var
+    if readPendingDatagrams(tramas.pattern_frame,ip_address=ip_address):
+        PatternSize = 7
+        if 100 == rx_var[0] and rx_num == PatternSize * 100+ 1:
+            pattern_list = []
+            for i in range(16):
+                readpoint = PatternSize * i + 1
+                Number = rx_var[readpoint]
+                CycleTime = rx_var[readpoint+1]|(rx_var[readpoint+2]<<8)
+                OffsetTime = rx_var[readpoint+3]
+                SplitNumber = rx_var[readpoint+4]
+                SequenceNumber = rx_var[readpoint+5]
+                WorkMode = rx_var[readpoint+6]
+                pattern_dict = { 
+                    'number':Number,
+                    'cycletime':CycleTime,
+                    'offsettime':OffsetTime,
+                    'splitnumber':SplitNumber,
+                    'sequencenumber':SequenceNumber,
+                    'workmode':WorkMode,
+                }
+                pattern_list.append(pattern_dict)
+            df = pd.DataFrame(pattern_list)
+            print(df)
+                
+'''
+la funcion de  obtencion de patrones se debe decodificar los valores del objeto para poder mapear
+'''
+def getScnedule():
     global rx_var
     if readPendingDatagrams(tramas.schedule_frame,ip_address=ip_address):
         schedule_size = 9
+        schedule_list = []
         for i in range(5):
             readpoint = schedule_size*i +1
             number = rx_var[readpoint]
@@ -183,14 +269,19 @@ def getHorarios():
             day = rx_var[readpoint+3]
             date = rx_var[readpoint+4] |(rx_var[readpoint+5]<<8) |(rx_var[readpoint+6]<<16) |(rx_var[readpoint+7]<<24)
             day_plan = rx_var[readpoint+8];
-            
-            print("number: ",number)
-            print("mes: ",month)
-            print("dia: ",day)
-            print("fecha: ",date)
-            print("plan: ",day_plan)
+            schedule_dict = {
+                'number':number,
+                'day_plan':day_plan,
+                'month':month,
+                'day':day,
+                'date':date,
+            }
+            schedule_list.append(schedule_dict)
+        df = pd.DataFrame(schedule_list)
+        print(df)
 '''
-pendiente revisar el proceso de conversion de datos sobre todo para las variables de mes y fecha.
+pendiente revisar el proceso de conversion de datos sobre todo para las variables de mes y fecha. , en la variable for se dejo por defecto
+5 para no generar toda la tabla
 '''
 
 def getPlanes():
@@ -199,8 +290,9 @@ def getPlanes():
         plansize = 73
         if 16 == rx_var[0] and rx_num == (plansize * 16 + 1):
             readpoint = 1;
-            for i in range(16):
+            for i in range(1): #le dejamos en 1 para obtener solo el primer plan
                 plan = rx_var[readpoint]
+                plan_list = []
                 readpoint += 1
                 for j in range(24):
                     num = j+1
@@ -210,12 +302,17 @@ def getPlanes():
                     readpoint += 1
                     accion = rx_var[readpoint]
                     readpoint += 1
-                    print("Plan: ",plan)
-                    print("num: ",num)
-                    print("hour: ",hour)
-                    print("minute: ",minute)
-                    print("Accion: ",accion)
-                    print("\n")
+                    plan_dict = {
+                        'plan':plan,
+                        'num':num,
+                        'hour':hour,
+                        'minute':minute,
+                        'accion':accion
+                    }
+                    plan_list.append(plan_dict)
+                df = pd.DataFrame(plan_list)
+                print(df)
+             
 
 def readPendingDatagrams(frame,ip_address):
     global rx_var_formated 
@@ -280,7 +377,7 @@ def readPendingDatagrams(frame,ip_address):
 while True:
     try:
         udp_socket.bind(('0.0.0.0', port))
-        getSecuencia()
+        getPlanes()
         udp_socket.close()
         break
     except OSError:

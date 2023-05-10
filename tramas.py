@@ -45,6 +45,41 @@ secuence_frame.append(19) #0
 secuence_frame.append(1) #0
 secuence_frame.append(233) #0
 secuence_frame.append(192) #0
+
+#search split
+split_frame = bytearray()
+split_frame.append(192) #0
+split_frame.append(32) #0
+split_frame.append(32) #0
+split_frame.append(16) #0
+split_frame.append(3) #0
+split_frame.append(1) #0
+split_frame.append(1) #0
+split_frame.append(0) #0
+split_frame.append(128) #0
+split_frame.append(20) #0
+split_frame.append(1) #0
+split_frame.append(234) #0
+split_frame.append(192) #0
+
+
+#search pattern
+pattern_frame = bytearray()
+pattern_frame.append(192)  #0
+pattern_frame.append(32)  #1
+pattern_frame.append(32) #2
+pattern_frame.append(16) #3
+pattern_frame.append(3) #4
+pattern_frame.append(1) #5
+pattern_frame.append(1) #6
+pattern_frame.append(0) #7
+pattern_frame.append(128) #8
+pattern_frame.append(8) #9
+pattern_frame.append(1) #10
+pattern_frame.append(222) #11
+pattern_frame.append(192) #12
+
+
 #basic_info 
 basic_info_frame = bytearray()
 basic_info_frame.append(192)  #0
@@ -125,39 +160,6 @@ action_frame.append(18) #9
 action_frame.append(1) #10
 action_frame.append(233) #11
 action_frame.append(192) #12
-#search pattern
-pattern_frame = bytearray()
-pattern_frame.append(192)  #0
-pattern_frame.append(32)  #1
-pattern_frame.append(32) #2
-pattern_frame.append(16) #3
-pattern_frame.append(3) #4
-pattern_frame.append(1) #5
-pattern_frame.append(1) #6
-pattern_frame.append(1) #7
-pattern_frame.append(128) #8
-pattern_frame.append(8) #9
-pattern_frame.append(1) #10
-pattern_frame.append(223) #11
-pattern_frame.append(192) #12
-#search split
-split_frame = bytearray()
-split_frame.append(192) #0
-split_frame.append(32) #0
-split_frame.append(32) #0
-split_frame.append(16) #0
-split_frame.append(3) #0
-split_frame.append(1) #0
-split_frame.append(1) #0
-split_frame.append(1) #0
-split_frame.append(128) #0
-split_frame.append(20) #0
-split_frame.append(1) #0
-split_frame.append(235) #0
-split_frame.append(192) #0
-
-
-
 
 
 
