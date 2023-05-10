@@ -14,6 +14,37 @@ time_frame.append(1) #10
 time_frame.append(219) #11
 time_frame.append(221) #12
 time_frame.append(192) #13
+#fases
+fases_frame = bytearray()
+fases_frame.append(192)  #0
+fases_frame.append(32)  #1
+fases_frame.append(32) #2
+fases_frame.append(16) #3
+fases_frame.append(3) #4
+fases_frame.append(1) #5
+fases_frame.append(1) #6
+fases_frame.append(0) #7
+fases_frame.append(128) #8
+fases_frame.append(7) #9
+fases_frame.append(1) #10
+fases_frame.append(221) #11
+fases_frame.append(192) #12
+#search sequence
+
+secuence_frame = bytearray() #0
+secuence_frame.append(192) #0
+secuence_frame.append(32)  #0
+secuence_frame.append(32) #0
+secuence_frame.append(16) #0
+secuence_frame.append(3) #0
+secuence_frame.append(1) #0
+secuence_frame.append(1) #0
+secuence_frame.append(0) #0
+secuence_frame.append(128) #0
+secuence_frame.append(19) #0
+secuence_frame.append(1) #0
+secuence_frame.append(233) #0
+secuence_frame.append(192) #0
 #basic_info 
 basic_info_frame = bytearray()
 basic_info_frame.append(192)  #0
@@ -111,35 +142,20 @@ pattern_frame.append(223) #11
 pattern_frame.append(192) #12
 #search split
 split_frame = bytearray()
-split_frame.append(192)
-split_frame.append(32)
-split_frame.append(32)
-split_frame.append(16)
-split_frame.append(3)
-split_frame.append(1)
-split_frame.append(1)
-split_frame.append(1)
-split_frame.append(128)
-split_frame.append(20)
-split_frame.append(1)
-split_frame.append(235)
-split_frame.append(192)
-#search sequence
+split_frame.append(192) #0
+split_frame.append(32) #0
+split_frame.append(32) #0
+split_frame.append(16) #0
+split_frame.append(3) #0
+split_frame.append(1) #0
+split_frame.append(1) #0
+split_frame.append(1) #0
+split_frame.append(128) #0
+split_frame.append(20) #0
+split_frame.append(1) #0
+split_frame.append(235) #0
+split_frame.append(192) #0
 
-secuence_frame = bytearray()
-secuence_frame.append(192)
-secuence_frame.append(32)
-secuence_frame.append(32)
-secuence_frame.append(16)
-secuence_frame.append(3)
-secuence_frame.append(1)
-secuence_frame.append(1)
-secuence_frame.append(1)
-secuence_frame.append(128)
-secuence_frame.append(19)
-secuence_frame.append(1)
-secuence_frame.append(234)
-secuence_frame.append(192)
 
 
 

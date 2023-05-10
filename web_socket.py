@@ -1,6 +1,7 @@
 # echo-client.py
 import socket
 import numpy as np
+import pandas as pd
 import tramas
 import time
 #variables de inicio
@@ -57,8 +58,101 @@ def getDeviceInfo():
 
         manufacturerInfoStr = ''.join([chr(temp[i]) for i in range(StrLen)])
         print(manufacturerInfoStr)
-
+def getFases():
+    global rx_var
+    if readPendingDatagrams(tramas.fases_frame,ip_address=ip_address):
+        PhaseSize = 32
+        if 16 == rx_var[0] and rx_num == PhaseSize * 16 + 1:
+            data_list = []
+            for i in range(16):
+                readpoint = PhaseSize * i + 1
+                Number = rx_var[readpoint]
+                Walk = rx_var[readpoint+1]
+                PedestrianClear = rx_var[readpoint+2]
+                MinimumGreen = rx_var[readpoint+3]
+                Passage = rx_var[readpoint+4]
+                Maximum1 = rx_var[readpoint+5]
+                Maximum2 = rx_var[readpoint+6]
+                YellowChange = rx_var[readpoint+7]
+                RedClear = rx_var[readpoint+8]
+                RedRevert = rx_var[readpoint+9]
+                AddedInitial = rx_var[readpoint+10]
+                MaximumInitial = rx_var[readpoint+11]
+                TimeBeforeReduction = rx_var[readpoint+12]
+                CarsBeforeReduction = rx_var[readpoint+13]
+                TimeToReduce = rx_var[readpoint+14]
+                ReduceBy = rx_var[readpoint+15]
+                MinimumGap = rx_var[readpoint+16]
+                DynamicMaxLimit = rx_var[readpoint+17]
+                DynamicMaxStep = rx_var[readpoint+18]
+                Startup = rx_var[readpoint+19]
+                Ring = rx_var[readpoint+20]
+                VehicleClear = rx_var[readpoint+21]
+                Options = rx_var[readpoint+22]|(rx_var[readpoint+23]<<8)
+                Concurrency =  rx_var[readpoint+24]|(rx_var[readpoint+25]<<8)|(rx_var[readpoint+26]<<16)|(rx_var[readpoint+27]<<24)
+                ReleasePhase = rx_var[readpoint+28]|(rx_var[readpoint+29]<<8)|(rx_var[readpoint+30]<<16)|(rx_var[readpoint+31]<<24)
+                
+                #creamos un diccionario con los datos 
+                data_fase = {
+                    'number':Number,
+                    'walk':Walk,
+                    'pedestrianClear':PedestrianClear,
+                    'minimumGreen':MinimumGreen,
+                    'passage':Passage,
+                    'maximun1':Maximum1,
+                    'maximun2':Maximum2,
+                    'yellowchange':YellowChange,
+                    'redclear':RedClear,
+                    'RedRevert':RedRevert,
+                    'AddedInitial':AddedInitial,
+                    'MaximunInitial':MaximumInitial,
+                    'TimeBeforeReduction':TimeBeforeReduction,
+                    'carsbeforereduction':CarsBeforeReduction,
+                    'timetoreduce':TimeToReduce,
+                    'reduceby':ReduceBy,
+                    'minimungap':MinimumGap,
+                    'dynamimaxlist':DynamicMaxLimit,
+                    'dynamicmaxstep':DynamicMaxStep,
+                    'startup':Startup,
+                    'ring':Ring,
+                    'vehicleclear':VehicleClear,
+                    'options':Options,
+                    'concurrency':Concurrency,
+                    'releasephase':ReleasePhase
+                }
+                data_list.append(data_fase)
         
+            df = pd.DataFrame(data_list)
+            print(df)
+
+
+def getSecuencia():
+    global rx_var
+    if readPendingDatagrams(tramas.secuence_frame,ip_address=ip_address):
+        SequenceSize =(16 + 1) * 4 + 1
+      
+        if 16 == rx_var[0] and rx_num == SequenceSize * 16+ 1:
+            readpoint = 1
+            for i in range(1):
+                Num = rx_var[readpoint]
+                readpoint +=1
+                rings_secuency = []
+                for i in range(4):
+                    RingNum = rx_var[readpoint]
+                    fases_ring = []
+                    readpoint +=1
+                    for i in range(16):
+                        fase = rx_var[readpoint]
+                        readpoint +=1
+                        fase_data = ('fase_{calculo}'.format(calculo = i+1),fase)
+                        fases_ring.append(fase_data)
+                    fases_dict = dict((x, y) for x, y in fases_ring)
+                    rings_secuency.append(fases_dict)
+                df = pd.DataFrame(rings_secuency)
+                print(df)
+                    
+
+
 def getTime():
     global rx_var
     if readPendingDatagrams(tramas.time_frame,ip_address=ip_address):
@@ -101,8 +195,27 @@ pendiente revisar el proceso de conversion de datos sobre todo para las variable
 
 def getPlanes():
     global rx_var
-    if readPendingDatagrams():
-        pass
+    if readPendingDatagrams(tramas.plan_frame,ip_address=ip_address):
+        plansize = 73
+        if 16 == rx_var[0] and rx_num == (plansize * 16 + 1):
+            readpoint = 1;
+            for i in range(16):
+                plan = rx_var[readpoint]
+                readpoint += 1
+                for j in range(24):
+                    num = j+1
+                    hour = rx_var[readpoint]
+                    readpoint += 1
+                    minute = rx_var[readpoint]
+                    readpoint += 1
+                    accion = rx_var[readpoint]
+                    readpoint += 1
+                    print("Plan: ",plan)
+                    print("num: ",num)
+                    print("hour: ",hour)
+                    print("minute: ",minute)
+                    print("Accion: ",accion)
+                    print("\n")
 
 def readPendingDatagrams(frame,ip_address):
     global rx_var_formated 
@@ -167,7 +280,7 @@ def readPendingDatagrams(frame,ip_address):
 while True:
     try:
         udp_socket.bind(('0.0.0.0', port))
-        getHorarios()
+        getSecuencia()
         udp_socket.close()
         break
     except OSError:
