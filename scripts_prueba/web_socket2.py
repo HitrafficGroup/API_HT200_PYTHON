@@ -62,6 +62,7 @@ def getFases():
     global rx_var
     if readPendingDatagrams(tramas.fases_frame,ip_address=ip_address):
         PhaseSize = 32
+        print('solicitando fases ....')
         if 16 == rx_var[0] and rx_num == PhaseSize * 16 + 1:
             data_list = []
             for i in range(16):
@@ -336,7 +337,6 @@ def readPendingDatagrams(frame,ip_address):
             udp_socket.sendto(frame, (ip_address, 161))
             data, sender = udp_socket.recvfrom(2048)
             udp_socket.close()
-            time.sleep(2)
             ips_connected.append(sender)
             array = list(data)
             size = len(array)

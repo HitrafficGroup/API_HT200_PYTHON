@@ -1,5 +1,6 @@
-from web_socket2 import getTime,getFases,getSecuencia,getSplit,getPattern,getAccion,getPlanes,getScnedule
+from web_sockets import MySocket
 run = True
+controlador =  MySocket('192.168.1.122')
 while run:
   
     print("1 >> Tiempo del Controlador")
@@ -10,23 +11,82 @@ while run:
     print("6 >> Action del Controlador")
     print("7 >> Plan del Controlador")
     print("8 >> Schedule del Controlador")
+    print("9 >> DeviceInfo del Controlador")
+    print("10 >> BasicInfo del Controlador")
     print("any >> Salir \n")
     option = input("\n Escoga una opcion: ")
     if option == '1':
-        getTime()
+        try:
+            controlador.getTime()
+        except Exception as e:
+                print(e)
+                print("algo ocurrio mal")
+                controlador.disconnect()
     elif option == '2':
-        getFases()
+            try:
+                controlador.getFases()
+            except Exception as e:
+                    print(e)
+                    print("algo ocurrio mal")
+                    controlador.disconnect()
     elif option == '3':
-        getSecuencia()
+            try:
+                controlador.getSecuencia()
+            except Exception as e:
+                    print(e)
+                    print("algo ocurrio mal")
+                    controlador.disconnect()
     elif option == '4':
-        getSplit()
+            try:
+                controlador.getSplit()
+            except Exception as e:
+                    print(e)
+                    print("algo ocurrio mal")
+                    controlador.disconnect()
     elif option == '5':
-        getPattern()
+            try:
+                controlador.getPattern()
+            except Exception as e:
+                    print(e)
+                    print("algo ocurrio mal")
+                    controlador.disconnect()
     elif option == '6':
-        getAccion()
+        try:
+            controlador.getAccion()
+        except Exception as e:
+            print(e)
+            print("algo ocurrio mal")
+            controlador.disconnect()
     elif option == '7':
-        getPlanes()
+            try:
+                controlador.getPlanes()
+            except Exception as e:
+                    print(e)
+                    print("algo ocurrio mal")
+                    controlador.disconnect()
     elif option == '8':
-        getScnedule()
+            try:
+                controlador.getScnedule()
+            except Exception as e:
+                    print(e)
+                    print("algo ocurrio mal")
+                    controlador.disconnect()
+    elif option == '9':
+                try:
+                    controlador.getDeviceInfo()
+                except Exception as e:
+                        print(e)
+                        print("algo ocurrio mal")
+                        controlador.disconnect()
+    elif option == '10':
+                try:
+                    controlador.getBasicInfo()
+                except Exception as e:
+                        print(e)
+                        print("algo ocurrio mal")
+                        controlador.disconnect()
+
+        
     else:
+        controlador.disconnect()
         run = False
