@@ -19,37 +19,37 @@ while run:
         try:
             controlador.getTime()
         except Exception as e:
-                print(e)
-                print("algo ocurrio mal")
-                controlador.disconnect()
+            print(e)
+            print("algo ocurrio mal")
+            controlador.disconnect()
     elif option == '2':
-            try:
-                controlador.getFases()
-            except Exception as e:
-                    print(e)
-                    print("algo ocurrio mal")
-                    controlador.disconnect()
+        try:
+            controlador.getFases()
+        except Exception as e:
+            print(e)
+            print("algo ocurrio mal")
+            controlador.disconnect()
     elif option == '3':
-            try:
-                controlador.getSecuencia()
-            except Exception as e:
-                    print(e)
-                    print("algo ocurrio mal")
-                    controlador.disconnect()
+        try:
+            controlador.getSecuencia()
+        except Exception as e:
+            print(e)
+            print("algo ocurrio mal")
+            controlador.disconnect()
     elif option == '4':
-            try:
-                controlador.getSplit()
-            except Exception as e:
-                    print(e)
-                    print("algo ocurrio mal")
-                    controlador.disconnect()
+        try:
+            controlador.getSplit()
+        except Exception as e:
+            print(e)
+            print("algo ocurrio mal")
+            controlador.disconnect()
     elif option == '5':
-            try:
-                controlador.getPattern()
-            except Exception as e:
-                    print(e)
-                    print("algo ocurrio mal")
-                    controlador.disconnect()
+        try:
+            controlador.getPattern()
+        except Exception as e:
+            print(e)
+            print("algo ocurrio mal")
+            controlador.disconnect()
     elif option == '6':
         try:
             controlador.getAccion()
@@ -58,35 +58,33 @@ while run:
             print("algo ocurrio mal")
             controlador.disconnect()
     elif option == '7':
-            try:
-                controlador.getPlanes()
-            except Exception as e:
-                    print(e)
-                    print("algo ocurrio mal")
-                    controlador.disconnect()
+        try:
+            controlador.getPlanes()
+        except Exception as e:
+            print(e)
+            print("algo ocurrio mal")
+            controlador.disconnect()
     elif option == '8':
-            try:
-                controlador.getScnedule()
-            except Exception as e:
-                    print(e)
-                    print("algo ocurrio mal")
-                    controlador.disconnect()
+        try:
+            controlador.getScnedule()
+        except Exception as e:
+            print(e)
+            print("algo ocurrio mal")
+            controlador.disconnect()
     elif option == '9':
-                try:
-                    controlador.getDeviceInfo()
-                except Exception as e:
-                        print(e)
-                        print("algo ocurrio mal")
-                        controlador.disconnect()
+        try:
+            controlador.getDeviceInfo()
+        except Exception as e:
+            print(e)
+            print("algo ocurrio mal")
+            controlador.disconnect()
     elif option == '10':
-                try:
-                    controlador.getBasicInfo()
-                except Exception as e:
-                        print(e)
-                        print("algo ocurrio mal")
-                        controlador.disconnect()
-
-        
+        try:
+            controlador.getBasicInfo()
+        except Exception as e:
+            print(e)
+            print("algo ocurrio mal")
+            controlador.disconnect()   
     else:
         controlador.disconnect()
         run = False
