@@ -431,6 +431,7 @@ class MySocket:
                         "ControlSource":ControlSource,
                         "ControlType":ControlType,
                         "Flash":Flash,
+                         "Flash":Dim,
                         "Position":Position,
                         "Direction":Direction,
                         "CountdownID":CountdownID,
@@ -438,6 +439,57 @@ class MySocket:
                     channel_list.append(channel_dict)
                 df = pd.DataFrame(channel_list)
                 print(df)
+    def getCoord(self):
+        rx_var = self.__rx_var
+        if self.readPendingDatagrams(tramas.coord_frame,ip_address=self.ip_target):
+            if self.__rx_num == 4:
+                OperationalMode = rx_var[0]
+                CorrectionMode = rx_var[1]
+                MaximumMode = rx_var[2]
+                ForceMode = rx_var[3]
+                coord_dict = {
+                    "OperationalMode":OperationalMode,
+                    "CorrectionMode":CorrectionMode,
+                    "MaximumMode":MaximumMode,
+                    "ForceMode":ForceMode,
+                }
+                print(coord_dict)
+
+    def getOverlap(self):
+         rx_var = self.__rx_var
+         OverlapSize = 10
+         overlap_list = []
+         if self.readPendingDatagrams(tramas.overlap_frame,ip_address=self.ip_target):
+            if 16== rx_var[0] and self.__rx_num == OverlapSize * 16 + 1:
+                readpoint = 1
+                for i in range(16):
+                    Num = rx_var[readpoint]
+                    readpoint +=1
+                    Type = rx_var[readpoint]
+                    readpoint +=1
+                    TrailGreen = rx_var[readpoint]
+                    readpoint +=1
+                    TrailClear = rx_var[readpoint]
+                    readpoint +=1
+                    TrailYellow = rx_var[readpoint]
+                    readpoint +=1
+                    TrailRed = rx_var[readpoint]
+                    readpoint +=1
+                    overlapDict = {
+                        "Num":Num,
+                        "Type":Type,
+                        "TrailGreen":TrailGreen,
+                        "TrailClear":TrailClear,
+                        "TrailYellow":TrailYellow,
+                        "TrailRed":TrailRed,
+                    }
+                    overlap_list.append(overlapDict)
+                df = pd.DataFrame(overlap_list)
+                print(df)
+
+
+
+
 
 
 

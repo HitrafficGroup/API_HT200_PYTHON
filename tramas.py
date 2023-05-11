@@ -195,6 +195,41 @@ chanel_frame.append(1) #10
 chanel_frame.append(220) #11
 chanel_frame.append(192) #12
 
+#read coord
+coord_frame = bytearray()
+coord_frame.append(192)  #0
+coord_frame.append(32)  #1
+coord_frame.append(32) #2
+coord_frame.append(16) #3
+coord_frame.append(3) #4
+coord_frame.append(1) #5
+coord_frame.append(1) #6
+coord_frame.append(0) #7
+coord_frame.append(128) #8
+coord_frame.append(22) #9
+coord_frame.append(1) #10
+coord_frame.append(236) #11
+coord_frame.append(192) #12
+
+#read overlaap
+overlap_frame = bytearray()
+overlap_frame.append(192)  #0
+overlap_frame.append(32)  #1
+overlap_frame.append(32) #2
+overlap_frame.append(16) #3
+overlap_frame.append(3) #4
+overlap_frame.append(1) #5
+overlap_frame.append(1) #6
+overlap_frame.append(0) #7
+overlap_frame.append(128) #8
+overlap_frame.append(23) #9
+overlap_frame.append(1) #10
+overlap_frame.append(237) #11
+overlap_frame.append(192) #12
+
+
+
+
 
 
 

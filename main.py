@@ -15,6 +15,8 @@ while run:
     print("a >> BasicInfo del Controlador")
     print("b >> Unit del Controlador")
     print("c >> Channel del Controlador")
+    print("d >> coordinacion del Controlador")
+    print("e >> Overlap del Controlador")
     print("any >> Salir \n")
     option = input("\n Escoga una opcion: ")
     if option == '1':
@@ -97,6 +99,20 @@ while run:
     elif option == 'c':
         try:
             controlador.getChannel()
+        except Exception as e:
+            print(e)
+            print("algo ocurrio mal")
+            controlador.disconnect()   
+    elif option == 'd':
+        try:
+            controlador.getCoord()
+        except Exception as e:
+            print(e)
+            print("algo ocurrio mal")
+            controlador.disconnect()   
+    elif option == 'e':
+        try:
+            controlador.getOverlap()
         except Exception as e:
             print(e)
             print("algo ocurrio mal")
