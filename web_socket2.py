@@ -6,7 +6,7 @@ import tramas
 import time
 #variables de inicio
 rx_var_formated = []
-udp_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+
 ip_address = "192.168.1.122"
 data = bytearray(2048)
 CheckSumCalc = 0
@@ -318,7 +318,7 @@ def getPlanes():
 
 def readPendingDatagrams(frame,ip_address):
     global rx_var_formated 
-    global udp_socket 
+    udp_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     global data
     global CheckSumCalc 
     global CheckSumReceive 
@@ -328,162 +328,64 @@ def readPendingDatagrams(frame,ip_address):
     global rx_num 
     global num
     global ips_connected
-    try:
-        udp_socket.sendto(frame, (ip_address, 161))
-        data, sender = udp_socket.recvfrom(2048)
-        ips_connected.append(sender)
-        array = list(data)
-        size = len(array)
+    port  =13536
+    while True:
 
-        if array[size-3] == 0xDB and array[size-2] == 0xDC:
-            dataEndPoint = size-4;
-            CheckSumReceive = 0xC0;
-            for i in range(1, dataEndPoint+1):
-                CheckSumCalc += array[i]
-        elif array[size-3] == 0xDB and array[size-2] == 0xDD:
-            dataEndPoint = size-4
-            CheckSumReceive = 0xDB
-            for i in range(1, dataEndPoint+1):
-                CheckSumCalc += array[i]
-        else:
-            dataEndPoint = size-3;
-            CheckSumReceive = array[size-2]
-            for i in range(1, dataEndPoint+1):
-                CheckSumCalc += array[i]
-        #CheckSumCalc = np.uint8(CheckSumCalc)
-        #CheckSumReceive = np.uint8(CheckSumReceive)
-        ''''
-        pendiente revisar la funcion checksum para la verificacion de valores. se podria implementar la libreria ctypes
-        para mejorar la conversion de los datos.
-        '''
-        while num <= dataEndPoint:
-            if array[num] == 0xDB and array[num+1] == 0xDC:
-                rx_var[rx_num] = 0xC0
-                rx_num += 1
-                num += 2
-            elif array[num] == 0xDB and array[num+1] == 0xDD:
-                rx_var[rx_num] = 0xDB
-                rx_num += 1
-                num += 2
+        try:
+            udp_socket.bind(('0.0.0.0', port))
+            udp_socket.sendto(frame, (ip_address, 161))
+            data, sender = udp_socket.recvfrom(2048)
+            udp_socket.close()
+            time.sleep(2)
+            ips_connected.append(sender)
+            array = list(data)
+            size = len(array)
+            if array[size-3] == 0xDB and array[size-2] == 0xDC:
+                dataEndPoint = size-4;
+                CheckSumReceive = 0xC0;
+                for i in range(1, dataEndPoint+1):
+                    CheckSumCalc += array[i]
+            elif array[size-3] == 0xDB and array[size-2] == 0xDD:
+                dataEndPoint = size-4
+                CheckSumReceive = 0xDB
+                for i in range(1, dataEndPoint+1):
+                    CheckSumCalc += array[i]
             else:
-                rx_var[rx_num] = array[num]
-                rx_num += 1
-                num += 1
-        rx_var_formated = list(rx_var)
-        return True
-    
-    except OSError:
-        print("algo ocurrio mal")
-        return False
-
-
-def getTimeControler():
-    #global udp_socket
-    udp_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    port = 13536
-    while True:
-        try:
-            udp_socket.bind(('0.0.0.0', port))
-            getTime()
-            udp_socket.close()
+                dataEndPoint = size-3;
+                CheckSumReceive = array[size-2]
+                for i in range(1, dataEndPoint+1):
+                    CheckSumCalc += array[i]
+            #CheckSumCalc = np.uint8(CheckSumCalc)
+            #CheckSumReceive = np.uint8(CheckSumReceive)
+            ''''
+            pendiente revisar la funcion checksum para la verificacion de valores. se podria implementar la libreria ctypes
+            para mejorar la conversion de los datos.
+            '''
+            rx_var = bytearray(2048)
+            rx_num = 0
+            num = 11
+            while num <= dataEndPoint:
+                if array[num] == 0xDB and array[num+1] == 0xDC:
+                    rx_var[rx_num] = 0xC0
+                    rx_num += 1
+                    num += 2
+                elif array[num] == 0xDB and array[num+1] == 0xDD:
+                    rx_var[rx_num] = 0xDB
+                    rx_num += 1
+                    num += 2
+                else:
+                    rx_var[rx_num] = array[num]
+                    rx_num += 1
+                    num += 1
+            rx_var_formated = list(rx_var)
             break
-        except OSError:
-            port += 1
-
-def getPhasesControler():
-    global udp_socket
-    aux_port = 13536
-    while True:
-        try:
-            udp_socket.bind(('0.0.0.0', aux_port))
-            getFases()
-            udp_socket.close()
-            break
-        except OSError:
-            aux_port += 1
-       
-def getSecuencyControler():
-    global udp_socket
-    port = 13536
-    while True:
-        try:
-            udp_socket.bind(('0.0.0.0', port))
-            getSecuencia()
-            time.sleep(2)
-            udp_socket.close()
-            break
-        except OSError:
-            port += 1
-      
-
-def getSplitControler():
-    global udp_socket
-    port = 13536
-    while True:
-        try:
-            udp_socket.bind(('0.0.0.0', port))
-            getSplit()
-            time.sleep(2)
-            udp_socket.close()
-            break
-        except OSError:
-            port += 1
-
-def getPatternControler():
-    global udp_socket
-    port = 13536
-    while True:
-        try:
-            udp_socket.bind(('0.0.0.0', port))
-            getPattern()
-            time.sleep(2)
-            udp_socket.close()
-            break
-        except OSError:
-            port += 1
-
-def getActionControler():
-    global udp_socket
-    port = 13536
-    while True:
-        try:
-            udp_socket.bind(('0.0.0.0', port))
-            getAccion()
-            time.sleep(2)
-            udp_socket.close()
-            break
-        except OSError:
-            port += 1
-     
+        except Exception as e:
+            print(e)
+            print("algo ocurrio mal")
+            return False
+    return True
 
 
-def getPlanControler():
-    global udp_socket
-    port = 13536
-    while True:
-        try:
-            udp_socket.bind(('0.0.0.0', port))
-            getPlanes()
-            time.sleep(2)
-            udp_socket.close()
-            break
-        except OSError:
-            port += 1
-   
-
-def getScheduleControler():
-    global udp_socket
-    port = 13536
-    while True:
-        try:
-            udp_socket.bind(('0.0.0.0', port))
-            getScnedule()
-            time.sleep(2)
-            udp_socket.close()
-            break
-        except OSError:
-            port += 1
          
 
 
-getScheduleControler()
