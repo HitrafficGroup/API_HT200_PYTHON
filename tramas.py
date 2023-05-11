@@ -162,6 +162,42 @@ action_frame.append(233) #11
 action_frame.append(192) #12
 
 
+#search unit
+unit_frame = bytearray()
+unit_frame.append(192)  #0
+unit_frame.append(32)  #1
+unit_frame.append(32) #2
+unit_frame.append(16) #3
+unit_frame.append(3) #4
+unit_frame.append(1) #5
+unit_frame.append(1) #6
+unit_frame.append(0) #7
+unit_frame.append(128) #8
+unit_frame.append(21) #9
+unit_frame.append(1) #10
+unit_frame.append(235) #11
+unit_frame.append(192) #12
+
+
+#read chanel o grupos
+chanel_frame = bytearray()
+chanel_frame.append(192)  #0
+chanel_frame.append(32)  #1
+chanel_frame.append(32) #2
+chanel_frame.append(16) #3
+chanel_frame.append(3) #4
+chanel_frame.append(1) #5
+chanel_frame.append(1) #6
+chanel_frame.append(0) #7
+chanel_frame.append(128) #8
+chanel_frame.append(6) #9
+chanel_frame.append(1) #10
+chanel_frame.append(220) #11
+chanel_frame.append(192) #12
+
+
+
+
 
 
 

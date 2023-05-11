@@ -363,8 +363,113 @@ class MySocket:
             port_server = "{port_s}".format(port_s = (rx_var[152]<<8)|rx_var[153])
             zona_horaria = ((rx_var[156]<<16)|(rx_var[157]<<8)|rx_var[158])/3600.0;
             tscNum = (rx_var[159]<<24)|(rx_var[160]<<16)|(rx_var[161]<<8)|rx_var[162]
-            print("mac_target: ",mac_addr)
-            print("ip_target: ",ip_server)
-            print("puerto_server: ",port_server)
-            print("zona_horaria: ",zona_horaria)
-            print("numero_dispositivo: ",tscNum)
+            basicinfo_dict = {
+            "mac_target: ":mac_addr,
+            "ip_target: ":ip_server,
+            "puerto_server: ":port_server,
+            "zona_horaria: ":zona_horaria,
+            "numero_dispositivo: ":tscNum
+            }
+            print(basicinfo_dict)
+
+    def getUnit(self):
+        rx_var = self.__rx_var
+        if self.readPendingDatagrams(tramas.unit_frame,ip_address=self.ip_target):
+            if self.__rx_num == 12:
+                StartupFlash = rx_var[0]
+                StartupAllRed = rx_var[1]
+                AutomaticPedClear = rx_var[2]
+                RedRevert = rx_var[3]
+                BackupTime = rx_var[4]|(rx_var[5]<<8)
+                FlowCycle = rx_var[6]
+                FlashStatus = rx_var[7]
+                Status = rx_var[8]
+                GreenConflictDetectFlag = rx_var[9]
+                RedGreenConflictDetectFlag = rx_var[10]
+                RedFailedDetectFlag = rx_var[11]
+
+                unit_dict =  {
+                    "StartupFlash":StartupFlash,
+                    "StartupAllRed":StartupAllRed,
+                    "AutomaticPedClear":AutomaticPedClear,
+                    "RedRevert":RedRevert,
+                    "BackupTime":BackupTime,
+                    "FlowCycle":FlowCycle,
+                    "FlashStatus":FlashStatus,
+                    "Status":Status,
+                    "GreenConflictDetectFlag":GreenConflictDetectFlag,
+                    "RedGreenConflictDetectFlag":RedGreenConflictDetectFlag,
+                     "RedFailedDetectFlag":RedFailedDetectFlag
+                }
+                print(unit_dict)
+    def getChannel(self):
+        rx_var = self.__rx_var
+        channel_list = []
+        if self.readPendingDatagrams(tramas.chanel_frame,ip_address=self.ip_target):
+            ChannelSize = 8
+            if 16 == rx_var[0] and self.__rx_num == ChannelSize * 16 + 1 :
+                readpoint = 1
+                for i in range(16):
+                    Num = rx_var[readpoint]
+                    readpoint +=1
+                    ControlSource = rx_var[readpoint]
+                    readpoint +=1
+                    ControlType = rx_var[readpoint];
+                    readpoint +=1
+                    Flash = rx_var[readpoint]
+                    readpoint +=1
+                    Dim = rx_var[readpoint]
+                    readpoint +=1
+                    Position = rx_var[readpoint]
+                    readpoint +=1
+                    Direction = rx_var[readpoint]
+                    readpoint +=1
+                    CountdownID = rx_var[readpoint]
+                    readpoint +=1
+                    channel_dict = {
+                        "Num":Num,
+                        "ControlSource":ControlSource,
+                        "ControlType":ControlType,
+                        "Flash":Flash,
+                        "Position":Position,
+                        "Direction":Direction,
+                        "CountdownID":CountdownID,
+                    }
+                    channel_list.append(channel_dict)
+                df = pd.DataFrame(channel_list)
+                print(df)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

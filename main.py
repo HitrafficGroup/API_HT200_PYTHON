@@ -12,7 +12,9 @@ while run:
     print("7 >> Plan del Controlador")
     print("8 >> Schedule del Controlador")
     print("9 >> DeviceInfo del Controlador")
-    print("10 >> BasicInfo del Controlador")
+    print("a >> BasicInfo del Controlador")
+    print("b >> Unit del Controlador")
+    print("c >> Channel del Controlador")
     print("any >> Salir \n")
     option = input("\n Escoga una opcion: ")
     if option == '1':
@@ -78,9 +80,23 @@ while run:
             print(e)
             print("algo ocurrio mal")
             controlador.disconnect()
-    elif option == '10':
+    elif option == 'a':
         try:
             controlador.getBasicInfo()
+        except Exception as e:
+            print(e)
+            print("algo ocurrio mal")
+            controlador.disconnect()   
+    elif option == 'b':
+        try:
+            controlador.getUnit()
+        except Exception as e:
+            print(e)
+            print("algo ocurrio mal")
+            controlador.disconnect()   
+    elif option == 'c':
+        try:
+            controlador.getChannel()
         except Exception as e:
             print(e)
             print("algo ocurrio mal")
