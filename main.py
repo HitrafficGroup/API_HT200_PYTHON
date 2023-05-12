@@ -1,22 +1,25 @@
 from web_sockets import MySocket
+import test_data
 run = True
 controlador =  MySocket('192.168.1.122')
 while run:
   
-    print("1 >> Tiempo del Controlador")
-    print("2 >> Phases del Controlador")
-    print("3 >> Secuency del Controlador")
-    print("4 >> Split del Controlador")
-    print("5 >> Pattern del Controlador")
-    print("6 >> Action del Controlador")
-    print("7 >> Plan del Controlador")
-    print("8 >> Schedule del Controlador")
-    print("9 >> DeviceInfo del Controlador")
-    print("a >> BasicInfo del Controlador")
-    print("b >> Unit del Controlador")
-    print("c >> Channel del Controlador")
-    print("d >> coordinacion del Controlador")
-    print("e >> Overlap del Controlador")
+    print("1   >> Tiempo del Controlador")
+    print("2   >> Phases del Controlador")
+    print("3   >> Secuency del Controlador")
+    print("4   >> Split del Controlador")
+    print("5   >> Pattern del Controlador")
+    print("6   >> Action del Controlador")
+    print("7   >> Plan del Controlador")
+    print("8   >> Schedule del Controlador")
+    print("9   >> DeviceInfo del Controlador")
+    print("10  >> BasicInfo del Controlador")
+    print("11  >> Unit del Controlador")
+    print("12  >> Channel del Controlador")
+    print("13  >> coordinacion del Controlador")
+    print("14  >> Overlap del Controlador")
+    print("15  >> cargar unit1 del Controlador")
+    print("16  >> cargar unit2 del Controlador")
     print("any >> Salir \n")
     option = input("\n Escoga una opcion: ")
     if option == '1':
@@ -82,41 +85,55 @@ while run:
             print(e)
             print("algo ocurrio mal")
             controlador.disconnect()
-    elif option == 'a':
+    elif option == '10':
         try:
             controlador.getBasicInfo()
         except Exception as e:
             print(e)
             print("algo ocurrio mal")
             controlador.disconnect()   
-    elif option == 'b':
+    elif option == '11':
         try:
             controlador.getUnit()
         except Exception as e:
             print(e)
             print("algo ocurrio mal")
             controlador.disconnect()   
-    elif option == 'c':
+    elif option == '12':
         try:
             controlador.getChannel()
         except Exception as e:
             print(e)
             print("algo ocurrio mal")
             controlador.disconnect()   
-    elif option == 'd':
+    elif option == '13':
         try:
             controlador.getCoord()
         except Exception as e:
             print(e)
             print("algo ocurrio mal")
             controlador.disconnect()   
-    elif option == 'e':
+    elif option == '14':
         try:
             controlador.getOverlap()
         except Exception as e:
             print(e)
             print("algo ocurrio mal")
             controlador.disconnect()   
+    elif option == '15':
+        try:
+            controlador.setUnit(test_data.unit_data_1)
+        except Exception as e:
+            print(e)
+            print("algo ocurrio mal")
+            controlador.disconnect()  
+    elif option == '16':
+        try:
+            controlador.setUnit(test_data.unit_data_2)
+        except Exception as e:
+            print(e)
+            print("algo ocurrio mal")
+            controlador.disconnect()  
     else:
         controlador.disconnect()
         run = False

@@ -12,6 +12,8 @@ class MySocket:
         self.__port = 161
         self.ip_target = ip_target
         self.__udpsocket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+
+
         self.__connect()
     
     udp_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -486,7 +488,68 @@ class MySocket:
                     overlap_list.append(overlapDict)
                 df = pd.DataFrame(overlap_list)
                 print(df)
+    def setUnit(self,data):
+        gbtx = bytearray(25)
+        #trama normal para escritura
+        gbtx[0]=192
+        gbtx[1]=32
+        gbtx[2]=32
+        gbtx[3]=16
+        gbtx[5]= 1
+        gbtx[6]= 1
+        gbtx[7]= 0
+        gbtx[10]= 1
+        #trama que especifica que se van a grabar los datos en unit 
+        gbtx[4] = 3
+        gbtx[8] = 129
+        gbtx[9] = 21
+        temp_var = []
+        num = 11;
+        temp_num = 12
+        for key in data:
+            value = data.get(key)
+            temp_var.append(value) #coegmos los datos de la api y los convertimos en una lista para posteriormente formatear y crear la trama udp
+        for i in range(temp_num):
+            if temp_var[i] == 0xC0:
+                gbtx[num] = 0xDB
+                num +=1
+                gbtx[num] = 0xDC
+                num +=1
+            elif temp_var[i] == 0xDB:
+                gbtx[num] = 0xDB
+                num +=1
+                gbtx[num] = 0xDD
+                num +=1
+            else:
+                gbtx[num] = temp_var[i]
+                num +=1
+        CheckSumCalc = 0
+        for i in range(1,num):
+            CheckSumCalc += gbtx[i]
+        CheckSumCalc = (CheckSumCalc % 256)
+        print(CheckSumCalc)
 
+        if CheckSumCalc == 0xC0:
+            gbtx[num]= 0xDB
+            num +=1
+            gbtx[num]= 0xDC
+            num +=1
+        elif CheckSumCalc == 0xDB:
+            gbtx[num]= 0xDB
+            num +=1
+            gbtx[num]= 0xDD
+            num +=1
+        else:
+            gbtx[num]= CheckSumCalc
+            num +=1;
+        gbtx[num]= 192 #frame tail
+        self.__udpsocket.sendto(gbtx, (self.ip_target,self.__port))
+        
+
+                
+
+                
+        
 
 
 
