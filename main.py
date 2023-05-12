@@ -122,14 +122,20 @@ while run:
             controlador.disconnect()   
     elif option == '15':
         try:
-            controlador.setUnit(test_data.unit_data_1)
+            if controlador.setUnit(test_data.unit_data_1):
+                print('envio correcto')
+            else:
+                print('envio incorrecto')
         except Exception as e:
             print(e)
             print("algo ocurrio mal")
             controlador.disconnect()  
     elif option == '16':
         try:
-            controlador.setUnit(test_data.unit_data_2)
+            if controlador.setUnit(test_data.unit_data_2):
+                print('envio correcto')
+            else:
+                print('envio incorrecto')
         except Exception as e:
             print(e)
             print("algo ocurrio mal")

@@ -544,6 +544,12 @@ class MySocket:
             num +=1;
         gbtx[num]= 192 #frame tail
         self.__udpsocket.sendto(gbtx, (self.ip_target,self.__port))
+        data_received, sender = self.__udpsocket.recvfrom(2048)
+        trama_respuesta = list(data_received)
+        if trama_respuesta[9] == 132:
+            return True
+        else:
+            return False
         
 
                 
