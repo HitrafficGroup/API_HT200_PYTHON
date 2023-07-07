@@ -2,6 +2,8 @@ from web_sockets import MySocketHT200
 import test_data
 run = True
 controlador =  MySocketHT200()
+#este es un script de prueba actualmente se realizaron algunas modificaciones en el objeto mysocket por ende
+#se debe revisar como esta estructurado y nuevamente actualizar este script.
 while run:
   
     print("1   >> Tiempo del Controlador")
