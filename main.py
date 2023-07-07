@@ -1,7 +1,7 @@
-from web_sockets import MySocket
+from web_sockets import MySocketHT200
 import test_data
 run = True
-controlador =  MySocket('192.168.1.122')
+controlador =  MySocketHT200()
 while run:
   
     print("1   >> Tiempo del Controlador")

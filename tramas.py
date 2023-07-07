@@ -228,36 +228,38 @@ overlap_frame.append(237) #11
 overlap_frame.append(192) #12
 
 
+#registro de errores frame
+error_frame = bytearray()
+error_frame.append(192)  #0
+error_frame.append(32)  #1
+error_frame.append(32)  #2
+error_frame.append(16)  #3
+error_frame.append(3)  #4
+error_frame.append(1)  #5
+error_frame.append(1)  #6
+error_frame.append(0)  #7
+error_frame.append(128)  #8
+error_frame.append(11)  #9
+error_frame.append(255)  #10
+error_frame.append(223)  #11
+error_frame.append(192)  #12
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#work state frame
+workstate_frame = bytearray()
+workstate_frame.append(192)  #0
+workstate_frame.append(32)  #1
+workstate_frame.append(32)  #2
+workstate_frame.append(16)  #3
+workstate_frame.append(2)  #4
+workstate_frame.append(1)  #5
+workstate_frame.append(1)  #6
+workstate_frame.append(0)  #7
+workstate_frame.append(128)  #8
+workstate_frame.append(3)  #9
+workstate_frame.append(1)  #10
+workstate_frame.append(216)  #11
+workstate_frame.append(192)  #12
 
 
 
@@ -276,3 +278,4 @@ search_ips_frame.append(191) #9
 search_ips_frame.append(1) #10
 search_ips_frame.append(143) #11
 search_ips_frame.append(192) #12
+
